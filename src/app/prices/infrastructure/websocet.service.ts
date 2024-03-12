@@ -7,11 +7,11 @@ import {webSocket, WebSocketSubject} from "rxjs/webSocket";
 export class WebSocketService {
   private socket$!: WebSocketSubject<any>;
 
-  public connect(url: string): WebSocketSubject<any> {
+  public connect(url: string): WebSocketSubject<unknown> {
     if (!this.socket$ || this.socket$.closed) {
       this.socket$ = webSocket({
-        url: url,
-        deserializer: msg => JSON.parse(msg.data) // Customize as necessary
+        url,
+        deserializer: e => JSON.parse(e.data)
       });
     }
     return this.socket$;
