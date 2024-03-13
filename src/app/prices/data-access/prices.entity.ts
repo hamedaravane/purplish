@@ -15,3 +15,11 @@ export interface KucoinInstanceServer {
   pingInterval: number,
   pingTimeout: number
 }
+
+export interface KucoinSubscription {
+  id: number,
+  type: "subscribe",
+  topic: string,
+  privateChannel: false,
+  response: boolean
+}

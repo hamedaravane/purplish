@@ -21,8 +21,18 @@
     "useDefineForClassFields": false,
     "lib": [
       "ES2022",
-      "DOM",
-    ]
+      "DOM"
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@shared/abstract/*": ["src/app/shared/abstract/*"],
+      "@shared/entity/*": ["src/app/shared/entity/*"],
+      "@prices/data-access/*": ["src/app/prices/data-access/*"],
+      "@prices/feature/*": ["src/app/prices/feature/*"],
+      "@prices/infrastructure/*": ["src/app/prices/infrastructure/*"],
+      "@prices/ui/*": ["src/app/prices/ui/*"],
+      "@layout/*": ["src/app/layout/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
