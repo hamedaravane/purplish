@@ -2,7 +2,7 @@
 
 // -------- Colors -----------
 // >>> Primary
-@primary-color: @blue-6;
+@primary-color: @purple-base;
 @processing-color: @primary-color;
 // >>> Info
 @info-color: @primary-color;
@@ -14,9 +14,9 @@
 @error-color: @red-5;
 @highlight-color: @red-5;
 // Background color for `<body>`
-@body-background: #fff;
+@body-background: @neutral-1;
 // Base background color for most components
-@component-background: #fff;
+@component-background: @neutral-2;
 @font-family: 'Vazirmatn', 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
 'Noto Color Emoji';
@@ -36,7 +36,23 @@
 @background-color-base: @gray-2;
 
 // Rate
-// ---
 @rate-star-color: @amber-5;
 @rate-star-size: 12px;
 @rate-star-hover-scale: scale(1.1);
+
+// Layout
+@layout-body-background: @neutral-1;
+@layout-header-background: @neutral-1;
+@layout-header-height: 64px;
+@layout-header-padding: 0 50px;
+@layout-footer-padding: 24px 50px;
+@layout-footer-background: @layout-body-background;
+@layout-sider-background: @neutral-3;
+@layout-trigger-height: 48px;
+@layout-trigger-background: @neutral-4;
+@layout-trigger-color: @neutral-1;
+@layout-zero-trigger-width: 36px;
+@layout-zero-trigger-height: 42px;
+// Layout light theme
+@layout-sider-background-light: @neutral-1;
+@layout-trigger-background-light: @neutral-1;

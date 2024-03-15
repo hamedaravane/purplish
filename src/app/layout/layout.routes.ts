@@ -3,12 +3,21 @@ import {Routes} from "@angular/router";
 export const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
+    pathMatch: 'prefix',
     loadComponent: () => import('./layout.component').then(c => c.LayoutComponent),
     children: [
       {
         path: '',
+        pathMatch: 'full',
+        redirectTo: 'main'
+      },
+      {
+        path: 'kucoin',
         loadComponent: () => import('../prices/feature/kucoin/kucoin.component').then(c => c.KucoinComponent)
+      },
+      {
+        path: 'main',
+        loadComponent: () => import('../prices/feature/main/main.component').then(c => c.MainComponent)
       }
     ]
   }
