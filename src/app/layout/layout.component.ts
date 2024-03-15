@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {
   NzContentComponent,
   NzFooterComponent,
@@ -7,6 +7,8 @@ import {
   NzSiderComponent
 } from "ng-zorro-antd/layout";
 import {RouterOutlet} from "@angular/router";
+import {ClockFacade} from '../shared/feature/clock/clock.facade';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-layout',
@@ -17,11 +19,13 @@ import {RouterOutlet} from "@angular/router";
     NzHeaderComponent,
     NzContentComponent,
     NzFooterComponent,
-    RouterOutlet
+    RouterOutlet,
+    AsyncPipe
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
-
+  private readonly clockFacade = inject(ClockFacade);
+  clock$ = this.clockFacade.clock$;
 }
