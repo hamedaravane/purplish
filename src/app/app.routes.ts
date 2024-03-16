@@ -3,11 +3,11 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    pathMatch: "full",
-    redirectTo: 'main'
+    pathMatch: 'full',
+    redirectTo: 'app'
   },
   {
-    path: 'main',
+    path: 'app',
     loadChildren: () => import('./layout/layout.routes').then(r => r.routes)
   }
 ];

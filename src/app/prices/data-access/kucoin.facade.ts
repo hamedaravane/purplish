@@ -1,19 +1,21 @@
-import {inject, Injectable} from "@angular/core";
-import {KucoinInfra} from "@prices/infrastructure/kucoin.infra";
-import {firstValueFrom, Observable, Subject} from "rxjs";
+import { inject, Injectable } from "@angular/core";
+import { KucoinInfra } from "@prices/infrastructure/kucoin.infra";
+import { firstValueFrom, Observable, Subject } from "rxjs";
 import {
   KucoinInstanceServer, KucoinPublicBulletResponse,
   KucoinWebsocketMarketSnapshotData,
   KucoinWebsocketMessage
-} from "@prices/data-access/kucoin.entity";
-import {WebsocketAbstract} from "@shared/abstract/websocket.abstract";
+} from "@prices/data-access/entity/kucoin.entity";
+import { WebsocketAbstract } from "@shared/abstract/websocket.abstract";
+import { OmpfinexFacade } from '@prices/data-access/ompfinex.facade';
 
 @Injectable({
   providedIn: "root"
 })
 export class KucoinFacade extends WebsocketAbstract {
   private readonly kucoinInfra = inject(KucoinInfra);
-  private kucoinPublicToken!: KucoinPublicBulletResponse;
+  private readonly ompfinexFacade = inject(OmpfinexFacade);
+  private readonly ompfinexCurrenciesMap = this.ompfinexFacade.ompfinexCurrenciesMapGetter;
   private instanceServer!: KucoinInstanceServer;
   private kucoinCurrencyMap = new Map<string, KucoinWebsocketMarketSnapshotData>();
   private kucoinMarketDataSubject = new Subject<Map<string, KucoinWebsocketMarketSnapshotData>>();
@@ -31,17 +33,17 @@ export class KucoinFacade extends WebsocketAbstract {
             response: true
           }
         )
+        setInterval(() => {
+          this.sendMessage({id: msg.id, type: 'ping'})
+        }, this.instanceServer.pingTimeout - 100);
         break;
       case "pong":
         break;
       case "ack":
-        setInterval(() => {
-          this.sendMessage({id: msg.id, type: 'ping'})
-        }, this.instanceServer.pingInterval - 10);
         break;
       case "message":
-        if (msg.data) {
-          this.kucoinCurrencyMap.set(msg.data.data.baseCurrency, msg.data);
+        if (this.ompfinexCurrenciesMap.has(msg.data!.data.baseCurrency)) {
+          this.kucoinCurrencyMap.set(msg.data!.data.baseCurrency, msg.data!);
           this.kucoinMarketDataSubject.next(this.kucoinCurrencyMap)
         }
         break;
@@ -62,13 +64,8 @@ export class KucoinFacade extends WebsocketAbstract {
     })
   }
   private async _createKucoinWebsocketConnection() {
-    // await this._getKucoinMarketList();
-    this.kucoinPublicToken = await firstValueFrom(this.kucoinInfra.getKucoinPublicTokenWebsocket());
-    this.instanceServer = this.getInstanceServers(this.kucoinPublicToken.data.instanceServers);
-    this.connect(`${this.instanceServer.endpoint}?token=${this.kucoinPublicToken.data.token}`);
+    const token = await firstValueFrom(this.kucoinInfra.getKucoinPublicTokenWebsocket());
+    this.instanceServer = this.getInstanceServers(token.data.instanceServers);
+    this.connect(`${this.instanceServer.endpoint}?token=${token.data.token}`);
   }
-  /*private async _getKucoinMarketList() {
-    const currencyListData = await firstValueFrom(this.kucoinInfra.getKucoinCurrencyList());
-    currencyListData.data.map((market) => this.kucoinCurrenciesNameSet.add(market.currency));
-  }*/
 }

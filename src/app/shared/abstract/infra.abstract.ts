@@ -8,5 +8,4 @@ import { Versions } from '@shared/entity/shared.entity';
 export class InfraAbstract {
   public readonly versionsEnum = Versions;
   protected readonly httpClient = inject(HttpClient);
-  protected readonly kucoinSpotBaseUrl: string = "https://api.kucoin.com";
 }

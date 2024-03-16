@@ -1,12 +1,12 @@
 import {inject, Injectable} from "@angular/core";
 import {OmpfinexInfra} from "@prices/infrastructure/ompfinex.infra";
-import {OmpfinexCurrency, OmpfinexDataResponse} from "@prices/data-access/ompfinex.entity";
+import {OmpfinexCurrency, OmpfinexDataResponse} from "@prices/data-access/entity/ompfinex.entity";
 import {firstValueFrom} from "rxjs";
 
 @Injectable({
   providedIn: "root"
 })
-export class OmpfinexMarketFacade {
+export class OmpfinexFacade {
   private readonly ompfinexInfra = inject(OmpfinexInfra);
   private ompfinexCurrenciesMap = new Map<string, OmpfinexCurrency>();
 

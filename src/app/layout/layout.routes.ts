@@ -3,18 +3,17 @@ import {Routes} from "@angular/router";
 export const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
     loadComponent: () => import('./layout.component').then(c => c.LayoutComponent),
     children: [
       {
         path: '',
         pathMatch: 'full',
-        loadComponent: () => import('../prices/feature/main/main.component').then(c => c.MainComponent)
+        redirectTo: 'dashboard'
       },
       {
-        path: 'kucoin',
-        loadComponent: () => import('../prices/feature/kucoin/kucoin.component').then(c => c.KucoinComponent)
-      },
+        path: 'dashboard',
+        loadComponent: () => import('@prices/feature/dashboard/dashboard.component').then(c => c.DashboardComponent)
+      }
     ]
   }
 ];

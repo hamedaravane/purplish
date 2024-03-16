@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {InfraAbstract} from "@shared/abstract/infra.abstract";
-import {OmpfinexCurrency, OmpfinexDataResponse} from "@prices/data-access/ompfinex.entity";
+import {OmpfinexCurrency, OmpfinexDataResponse} from "@prices/data-access/entity/ompfinex.entity";
 
 @Injectable({
   providedIn: "root"
