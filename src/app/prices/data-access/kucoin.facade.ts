@@ -12,17 +12,19 @@ import { OmpfinexFacade } from '@prices/data-access/ompfinex.facade';
 @Injectable({
   providedIn: "root"
 })
-export class KucoinFacade extends WebsocketAbstract {
+export class KucoinFacade {
+  private websocketAbstract = new WebsocketAbstract();
   private readonly kucoinInfra = inject(KucoinInfra);
   private readonly ompfinexFacade = inject(OmpfinexFacade);
   private readonly ompfinexCurrenciesMap = this.ompfinexFacade.ompfinexCurrenciesMapGetter;
   private instanceServer!: KucoinInstanceServer;
   private kucoinCurrencyMap = new Map<string, KucoinWebsocketMarketSnapshotData>();
   private kucoinMarketDataSubject = new Subject<Map<string, KucoinWebsocketMarketSnapshotData>>();
+  readonly kucoinIconPath = this.kucoinInfra.kucoinIconPath;
   public get kucoinMarketData$(): Observable<Map<string, KucoinWebsocketMarketSnapshotData>> {
     return this.kucoinMarketDataSubject.asObservable();
   }
-  protected override onMessageReceived(msg: KucoinWebsocketMessage): void {
+  protected onMessageReceived(msg: KucoinWebsocketMessage): void {
     switch (msg.type) {
       case "welcome":
         this.sendMessage(
@@ -66,6 +68,6 @@ export class KucoinFacade extends WebsocketAbstract {
   private async _createKucoinWebsocketConnection() {
     const token = await firstValueFrom(this.kucoinInfra.getKucoinPublicTokenWebsocket());
     this.instanceServer = this.getInstanceServers(token.data.instanceServers);
-    this.connect(`${this.instanceServer.endpoint}?token=${token.data.token}`);
+    this.websocketAbstract.connect(`${this.instanceServer.endpoint}?token=${token.data.token}`);
   }
 }

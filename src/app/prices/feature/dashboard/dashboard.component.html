@@ -1,16 +1,19 @@
-<div class="grid xl:grid-cols-7 gap-2">
+<div class="grid xl:grid-cols-7 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 gap-2">
   @for (ompfinexCurrency of ompfinexCurrenciesMap.values(); track ompfinexCurrency.id) {
     <div class="bg-neutral-300 border border-solid border-neutral-50 p-2 rounded-md overflow-clip">
       <div class="flex w-full justify-between mb-2">
         <strong>{{ ompfinexCurrency.name }}</strong>
         <div class="flex items-center gap-2">
-          <img [ngSrc]="ompfinexCurrency.icon_path" width="14" height="14" alt="currency icon">
           <span>{{ ompfinexCurrency.id }}</span>
+          <img [ngSrc]="ompfinexCurrency.icon_path" width="14" height="14" alt="currency icon">
         </div>
       </div>
       @if ((kucoinMessage$ | async); as kucoin) {
         @if (kucoin.get(ompfinexCurrency.id)?.data; as kucoinCurrency) {
-          <div>{{kucoinCurrency.lastTradedPrice}}</div>
+          <div class="flex items-center gap-2">
+            <img [ngSrc]="kucoinIconPath" width="14" height="14" alt="kucoin_icon" class="w-3.5 h-3.5 rounded-full overflow-clip object-cover">
+            <span class="font-mono slashed-zero">{{kucoinCurrency.lastTradedPrice}}</span>
+          </div>
         }
       }
     </div>
