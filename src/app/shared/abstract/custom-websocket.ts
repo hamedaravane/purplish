@@ -25,7 +25,7 @@ export class CustomWebsocket {
       complete: () => console.info('WebSocket connection closed')
     });
   }
-  private sendMessage(msg: unknown): void {
+  public sendMessage(msg: unknown): void {
     if (this.webSocketSubject) {
       this.webSocketSubject.next(msg);
     }
