@@ -12,7 +12,7 @@ export const routes: Routes = [
       },
       {
         path: 'market',
-        loadComponent: () => import('@prices/feature/dashboard/dashboard.component').then(c => c.DashboardComponent)
+        loadComponent: () => import('@market/feature/dashboard/dashboard.component').then(c => c.DashboardComponent)
       }
     ]
   }
