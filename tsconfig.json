@@ -25,12 +25,14 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@shared/abstract/*": ["src/app/shared/abstract/*"],
-      "@shared/entity/*": ["src/app/shared/entity/*"],
-      "@prices/data-access/*": ["src/app/prices/data-access/*"],
-      "@prices/feature/*": ["src/app/prices/feature/*"],
-      "@prices/infrastructure/*": ["src/app/prices/infrastructure/*"],
-      "@prices/ui/*": ["src/app/prices/ui/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@market/*": ["src/app/market/*"],
+      "@arbitrage/*": ["src/app/arbitrage/*"],
+      "@trading/*": ["src/app/trading/*"],
+      "@preferences/*": ["src/app/preferences/*"],
+      "@auth/*": ["src/app/auth/*"],
+      "@notifications/*": ["src/app/notifications/*"],
+      "@core/*": ["src/app/core/*"],
       "@layout/*": ["src/app/layout/*"]
     }
   },

@@ -8,10 +8,10 @@ export const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'dashboard'
+        redirectTo: 'market'
       },
       {
-        path: 'dashboard',
+        path: 'market',
         loadComponent: () => import('@prices/feature/dashboard/dashboard.component').then(c => c.DashboardComponent)
       }
     ]

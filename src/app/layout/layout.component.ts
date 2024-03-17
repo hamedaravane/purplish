@@ -7,7 +7,7 @@ import {
   NzSiderComponent
 } from "ng-zorro-antd/layout";
 import {RouterOutlet} from "@angular/router";
-import {ClockFacade} from '../shared/feature/clock/clock.facade';
+import {ClockFacade} from '@shared/clock/clock.facade';
 import {AsyncPipe} from '@angular/common';
 import { OmpfinexFacade } from '@prices/data-access/ompfinex.facade';
 import { KucoinFacade } from '@prices/data-access/kucoin.facade';
