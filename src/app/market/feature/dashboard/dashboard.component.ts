@@ -1,7 +1,7 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {OmpfinexFacade} from "@prices/data-access/ompfinex.facade";
+import {Component, inject} from '@angular/core';
 import { AsyncPipe, NgOptimizedImage, NgTemplateOutlet } from "@angular/common";
-import { KucoinFacade } from '@prices/data-access/kucoin.facade';
+import {OmpfinexFacade} from '@market/data-access/ompfinex.facade';
+import {KucoinFacade} from '@market/data-access/kucoin.facade';
 
 @Component({
   selector: 'app-dashboard',
