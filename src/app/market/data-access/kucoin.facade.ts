@@ -1,13 +1,12 @@
 import { inject, Injectable } from "@angular/core";
-import { KucoinInfra } from "@prices/infrastructure/kucoin.infra";
 import { firstValueFrom, Observable, Subject } from "rxjs";
+import {KucoinInfra} from '@market/infrastructure/kucoin.infra';
+import {OmpfinexFacade} from '@market/data-access/ompfinex.facade';
 import {
-  KucoinInstanceServer, KucoinPublicBulletResponse,
+  KucoinInstanceServer,
   KucoinWebsocketMarketSnapshotData,
   KucoinWebsocketMessage
-} from "@prices/data-access/entity/kucoin.entity";
-import { WebsocketAbstract } from "@shared/abstract/websocket.abstract";
-import { OmpfinexFacade } from '@prices/data-access/ompfinex.facade';
+} from '@market/entity/kucoin.entity';
 
 @Injectable({
   providedIn: "root"

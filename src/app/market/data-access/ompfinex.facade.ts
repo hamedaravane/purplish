@@ -1,13 +1,12 @@
 import {inject, Injectable} from "@angular/core";
-import {OmpfinexInfra} from "@prices/infrastructure/ompfinex.infra";
-import { OmpfinexCurrency, OmpfinexDataResponse, ompfinexWebsocketMessage } from "@prices/data-access/entity/ompfinex.entity";
 import {firstValueFrom} from "rxjs";
-import { WebsocketAbstract } from '@shared/abstract/websocket.abstract';
+import {OmpfinexInfra} from '@market/infrastructure/ompfinex.infra';
+import {OmpfinexCurrency, OmpfinexDataResponse, ompfinexWebsocketMessage} from '@market/entity/ompfinex.entity';
 
 @Injectable({
   providedIn: "root"
 })
-export class OmpfinexFacade extends WebsocketAbstract {
+export class OmpfinexFacade {
   private readonly ompfinexInfra = inject(OmpfinexInfra);
   private ompfinexCurrenciesMap = new Map<string, OmpfinexCurrency>();
 
