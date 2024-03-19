@@ -1,25 +1,19 @@
-import { inject, Injectable } from "@angular/core";
-import { firstValueFrom, Observable, Subject } from "rxjs";
-import {KucoinInfra} from '@market/infrastructure/kucoin.infra';
+import {inject, Injectable} from "@angular/core";
+import {Observable, Subject} from "rxjs";
 import {OmpfinexFacade} from '@market/data-access/ompfinex.facade';
-import {
-  KucoinInstanceServer,
-  KucoinWebsocketMarketSnapshotData,
-  KucoinWebsocketMessage
-} from '@market/entity/kucoin.entity';
+import {KucoinWebsocketMarketSnapshotData, KucoinWebsocketMessage} from '@market/entity/kucoin.entity';
+import {KucoinWebsocket} from "@market/infrastructure/websocket/kucoin.websocket";
 
 @Injectable({
   providedIn: "root"
 })
 export class KucoinFacade {
-  private websocketAbstract = new WebsocketAbstract();
-  private readonly kucoinInfra = inject(KucoinInfra);
+  private readonly kucoinWebSocket = inject(KucoinWebsocket);
   private readonly ompfinexFacade = inject(OmpfinexFacade);
   private readonly ompfinexCurrenciesMap = this.ompfinexFacade.ompfinexCurrenciesMapGetter;
-  private instanceServer!: KucoinInstanceServer;
   private kucoinCurrencyMap = new Map<string, KucoinWebsocketMarketSnapshotData>();
   private kucoinMarketDataSubject = new Subject<Map<string, KucoinWebsocketMarketSnapshotData>>();
-  readonly kucoinIconPath = this.kucoinInfra.kucoinIconPath;
+  readonly kucoinIconPath = this.kucoinWebSocket.kucoinIconPath;
   public get kucoinMarketData$(): Observable<Map<string, KucoinWebsocketMarketSnapshotData>> {
     return this.kucoinMarketDataSubject.asObservable();
   }
@@ -50,23 +44,8 @@ export class KucoinFacade {
         break;
     }
   }
-  public createKucoinWebsocketConnection(): void {
-    this._createKucoinWebsocketConnection().then();
-  }
-  private getInstanceServers(array: KucoinInstanceServer[]) {
-    return array.reduce(previousValue => {
-      return {
-        endpoint: previousValue.endpoint,
-        pingInterval: previousValue.pingInterval,
-        encrypt: previousValue.encrypt,
-        protocol: previousValue.protocol,
-        pingTimeout: previousValue.pingTimeout
-      }
-    })
-  }
-  private async _createKucoinWebsocketConnection() {
-    const token = await firstValueFrom(this.kucoinInfra.getKucoinPublicTokenWebsocket());
-    this.instanceServer = this.getInstanceServers(token.data.instanceServers);
-    this.websocketAbstract.connect(`${this.instanceServer.endpoint}?token=${token.data.token}`);
+
+  initWebSocket() {
+    this.kucoinWebSocket.init().then();
   }
 }
