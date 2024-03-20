@@ -1,5 +1,3 @@
-import { KucoinWebsocketMarketSnapshotData } from '@prices/data-access/entity/kucoin.entity';
-
 export interface OmpfinexDataResponse<T> {
   status: string;
   data: T;
@@ -14,6 +12,37 @@ export interface OmpfinexCurrency {
   category: {
     slug: null
   }
+}
+
+interface OmpfinexMarketCurrency {
+  id: string;
+  icon_path: string;
+  name: string;
+}
+
+export interface OmpfinexMarketDto {
+  id: number;
+  base_currency: OmpfinexMarketCurrency;
+  quote_currency: OmpfinexMarketCurrency;
+  name: string;
+  min_price: number;
+  max_price: number;
+  last_price: number;
+  day_change_percent: number;
+  tradingview_symbol: string;
+  liked_by_user: boolean;
+}
+
+export interface OmpfinexMarket {
+  id: number;
+  baseCurrencyId: string;
+  baseCurrencyIconPath: string;
+  baseCurrencyName: string;
+  quoteCurrencyId: string;
+  quoteCurrencyIconPath: string;
+  quoteCurrencyName: string;
+  price: string;
+  volume: string;
 }
 export interface OmpfinexNetworkCurrency {
   network: string;

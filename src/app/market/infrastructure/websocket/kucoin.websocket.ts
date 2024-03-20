@@ -40,11 +40,11 @@ export class KucoinWebsocket extends WebsocketAbstract {
     }
   }
 
-  protected onComplete(): void {
+  protected override onComplete(): void {
     console.log('in this moment the subscription to kucoin websocket ended!')
   }
 
-  protected onError(err: Error): void {
+  protected override onError(err: Error): void {
     console.warn('in kucoin websocket error happened!')
   }
 }

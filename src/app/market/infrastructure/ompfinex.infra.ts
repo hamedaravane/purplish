@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {InfraAbstract} from "@shared/abstract/infra.abstract";
-import {OmpfinexCurrency, OmpfinexDataResponse} from "@prices/data-access/entity/ompfinex.entity";
-import { CustomWebsocket } from '@shared/abstract/custom-websocket';
+import {OmpfinexCurrency, OmpfinexDataResponse, OmpfinexMarketDto} from "@market/entity/ompfinex.entity";
+import {map} from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -9,8 +9,14 @@ import { CustomWebsocket } from '@shared/abstract/custom-websocket';
 export class OmpfinexInfra extends InfraAbstract {
   ompfinexApiBaseUrl = 'https://api.ompfinex.com';
   ompfinexWebsocketApiBaseUrl = 'wss://stream.ompfinex.com/stream';
-  private readonly customWebsocket = new CustomWebsocket(this.ompfinexWebsocketApiBaseUrl);
+
   getOmpfinexCurrencies() {
-    return this.httpClient.get<OmpfinexDataResponse<OmpfinexCurrency[]>>(`${this.ompfinexApiBaseUrl}/v2/currencies`);
+    return this.httpClient.get<OmpfinexDataResponse<OmpfinexCurrency[]>>(`${this.ompfinexApiBaseUrl}/${this.versionsEnum.V2}/currencies`)
+      .pipe(map((res) => res.data));
+  }
+
+  getOmpfinexMarkets() {
+    return this.httpClient.get<OmpfinexDataResponse<OmpfinexMarketDto[]>>(`${this.ompfinexApiBaseUrl}/${this.versionsEnum.V1}/market`)
+      .pipe(map((res) => res.data));
   }
 }
