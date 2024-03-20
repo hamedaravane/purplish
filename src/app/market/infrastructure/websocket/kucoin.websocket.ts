@@ -3,6 +3,7 @@ import {WebsocketAbstract} from "@shared/abstract/websocket.abstract";
 import {firstValueFrom, Observable, Subject} from "rxjs";
 import {KucoinInfra} from "@market/infrastructure/kucoin.infra";
 import {KucoinPublicBulletResponse, KucoinWebsocketMessage, MarketData} from "@market/entity/kucoin.entity";
+import {MarketStore} from '@market/store/market.store';
 
 @Injectable({
   providedIn: "root"
@@ -10,15 +11,17 @@ import {KucoinPublicBulletResponse, KucoinWebsocketMessage, MarketData} from "@m
 export class KucoinWebsocket extends WebsocketAbstract {
   protected endpoint!: string;
   private readonly kucoinInfra = inject(KucoinInfra);
-  kucoinIconPath = this.kucoinInfra.kucoinIconPath;
-  private bulletResponse!: KucoinPublicBulletResponse;
+  private readonly marketStore = inject(MarketStore);
   private readonly messageSubject = new Subject<MarketData>();
   messages$: Observable<MarketData> = this.messageSubject.asObservable();
+  kucoinCurrencyMap = this.marketStore.kucoinCurrencyMap;
+  ompfinexCurrencyMap = this.marketStore.ompfinexCurrencyMap;
+  kucoinWebsocketMarketSubject = this.marketStore.kucoinWebsocketMarketSubject;
 
   async init() {
-    this.bulletResponse = await firstValueFrom(this.kucoinInfra.getKucoinPublicBulletResponse());
-    this.endpoint = this.kucoinInfra.kucoinWebsocketSpotBaseUrl + this.bulletResponse;
-    const instanceServer = this.bulletResponse.data.instanceServers.reduce(previousValue => previousValue);
+    const bulletResponse = await firstValueFrom(this.kucoinInfra.getKucoinPublicBulletResponse());
+    this.endpoint = this.kucoinInfra.kucoinWebsocketSpotBaseUrl + bulletResponse;
+    const instanceServer = bulletResponse.data.instanceServers.reduce(previousValue => previousValue);
     const pingMessage = {type: 'ping'};
     this.connect();
     this.keepAlive(instanceServer.pingInterval, pingMessage, instanceServer.pingTimeout);
@@ -36,6 +39,10 @@ export class KucoinWebsocket extends WebsocketAbstract {
       )
     }
     if (message.type === "message") {
+      if (this.ompfinexCurrencyMap.has(message.data!.data.baseCurrency)) {
+        this.kucoinCurrencyMap.set(message.data!.data.baseCurrency, message.data!.data);
+        this.kucoinWebsocketMarketSubject.next(this.kucoinCurrencyMap);
+      }
       this.messageSubject.next(message.data!.data);
     }
   }

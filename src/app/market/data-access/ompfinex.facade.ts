@@ -9,10 +9,8 @@ import {firstValueFrom, map} from "rxjs";
   providedIn: "root"
 })
 export class OmpfinexFacade {
-  ompfinexCurrencies!: OmpfinexCurrency[];
-  private readonly ompfinexInfra = inject(OmpfinexInfra);
-  ompfinexMarkets!: OmpfinexMarketDto[];
   private readonly ompfinexWebsocket = inject(OmpfinexWebsocket);
+  ompfinexMarkets!: OmpfinexMarketDto[];
   ompfinexMarketWebsocket$ = this.ompfinexWebsocket.messages$.pipe(
     map((markets) => {
       let result = new Array<OmpfinexMarket>();
@@ -35,22 +33,4 @@ export class OmpfinexFacade {
       return result;
     })
   );
-
-  getOmpfinexCurrencies() {
-    firstValueFrom(this.ompfinexInfra.getOmpfinexCurrencies()).then((res) => {
-      this.ompfinexCurrencies = res;
-    });
-  }
-
-  getOmpfinexMarkets() {
-    firstValueFrom(this.ompfinexInfra.getOmpfinexMarkets()).then((res) => {
-      this.ompfinexMarkets = res;
-    });
-  }
-
-  initWebSocket() {
-    this.getOmpfinexCurrencies();
-    this.getOmpfinexMarkets();
-    this.ompfinexWebsocket.init();
-  }
 }

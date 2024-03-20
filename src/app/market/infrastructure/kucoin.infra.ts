@@ -8,7 +8,6 @@ import {KucoinPublicBulletResponse} from "@market/entity/kucoin.entity";
 })
 export class KucoinInfra extends InfraAbstract {
   readonly kucoinWebsocketSpotBaseUrl: string = "wss://ws-api-spot.kucoin.com/?token=";
-  readonly kucoinIconPath: string = "https://assets.staticimg.com/cms/media/3gfl2DgVUqjJ8FnkC7QxhvPmXmPgpt42FrAqklVMr.png";
   private readonly kucoinSpotBaseUrl: string = "https://api.kucoin.com";
 
   getKucoinPublicBulletResponse(): Observable<KucoinPublicBulletResponse> {
