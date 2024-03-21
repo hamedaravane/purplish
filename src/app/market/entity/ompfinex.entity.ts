@@ -2,6 +2,7 @@ export interface OmpfinexDataResponse<T> {
   status: string;
   data: T;
 }
+
 export interface OmpfinexCurrency {
   id: string;
   name: string;
@@ -44,6 +45,7 @@ export interface OmpfinexMarket {
   price: string;
   volume: string;
 }
+
 export interface OmpfinexNetworkCurrency {
   network: string;
   withdraw_enabled: boolean,
@@ -52,44 +54,56 @@ export interface OmpfinexNetworkCurrency {
   minimum_withdraw_amount: string;
 }
 
-export interface ompfinexWebsocketMessage {
-  id?: number;
-  connect?: {
+export type ompfinexResponseWS =
+  | ompfinexSubscribeAcknowledgeWSChannel
+  | ompfinexConnectWSResponse
+  | ompfinexPushWSData;
+
+export interface ompfinexSubscribeAcknowledgeWSChannel {
+  id: number;
+  subscribe: {};
+}
+
+export interface ompfinexConnectWSResponse {
+  id: number;
+  connect: {
     client: string;
-    ping: 6;
-    pong: boolean;
     version: string;
-  };
-  subscribe?: {};
-  push?: {
-    channel: 'public-market:r-price-ag';
-    pub: {
-      data: {
-        data: ompfinexMarketData[];
-      };
-      offset: number;
-    }
-  };
-  history?: {
-    epoch: string;
-    offset: number;
-    publications: []
+    ping: number;
+    pong: boolean;
   }
 }
 
-export interface ompfinexMarketData {
+export interface ompfinexPushWSData {
+  push: {
+    channel: string;
+    pub: {
+      data: {
+        data: {
+          price: string;
+          v: string;
+          t: number;
+        }
+      },
+      offset: number;
+    }
+  }
+}
+
+
+export interface ompfinexMarketRawWS {
   price: string;
   t: number;
   v: string;
   m: number;
 }
 
-export interface ompfinexHistoryPublication {
-  data: ompfinexPublicationData[];
+export interface ompfinexHistoryPublicationRawWS {
+  data: ompfinexPublicationRawWS[];
   offset: number;
 }
 
-export interface ompfinexPublicationData {
+export interface ompfinexPublicationRawWS {
   a: string;
   p: string;
   t: 'buy' | 'sell';

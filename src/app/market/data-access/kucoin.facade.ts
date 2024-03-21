@@ -11,13 +11,6 @@ export class KucoinFacade {
   private readonly kucoinWebSocket = inject(KucoinWebsocket);
   private kucoinCurrencyMap = new Map<string, MarketData>();
 
-  kucoinMarketDataMap$ = this.kucoinWebSocket.messages$.pipe(
-    map(value => {
-      this.kucoinCurrencyMap.set(value.baseCurrency, value);
-      return this.kucoinCurrencyMap;
-    })
-  );
-
   initWebSocket() {
     this.kucoinWebSocket.init().then();
   }

@@ -2,16 +2,16 @@ import {inject, Injectable} from "@angular/core";
 import {WebsocketAbstract} from "@shared/abstract/websocket.abstract";
 import {OmpfinexInfra} from "@market/infrastructure/ompfinex.infra";
 import {Subject} from "rxjs";
-import {ompfinexMarketData, ompfinexWebsocketMessage} from "@market/entity/ompfinex.entity";
+import {ompfinexMarketRawWS, ompfinexResponseWS} from "@market/entity/ompfinex.entity";
+import {MarketStore} from "@market/store/market.store";
 
 @Injectable({
   providedIn: "root"
 })
 export class OmpfinexWebsocket extends WebsocketAbstract {
   private readonly ompfinexInfra = inject(OmpfinexInfra);
+  private readonly marketStore = inject(MarketStore);
   protected endpoint: string = this.ompfinexInfra.ompfinexWebsocketApiBaseUrl;
-  private readonly messageSubject = new Subject<ompfinexMarketData[]>();
-  messages$ = this.messageSubject.asObservable();
   private webSocketId = 1;
 
   init() {
@@ -20,8 +20,8 @@ export class OmpfinexWebsocket extends WebsocketAbstract {
     this.subscribeToChannel('public-market:r-price-ag');
   }
 
-  protected handleMessages(message: ompfinexWebsocketMessage): void {
-    this.messageSubject.next(message.push!.pub.data.data);
+  protected handleMessages(message: ompfinexResponseWS): void {
+    this.marketStore.ompfinexMarketResponseWSSubject.next(message);
   }
 
   protected override onComplete(): void {

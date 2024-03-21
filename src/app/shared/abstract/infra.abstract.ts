@@ -1,8 +1,6 @@
-import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaderResponse } from '@angular/common/http';
-import { Versions } from '@shared/entity/shared.entity';
-import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { CustomWebsocket } from '@shared/abstract/custom-websocket';
+import {inject, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Versions} from '@shared/entity/shared.entity';
 
 @Injectable({
   providedIn: 'root'

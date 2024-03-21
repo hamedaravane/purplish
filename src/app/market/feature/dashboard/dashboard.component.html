@@ -1,27 +1,12 @@
 <div class="grid xl:grid-cols-7 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 gap-2">
-  @if ({
-    ompfinexMarketWebsocket: ompfinexMarketWebsocket$ | async,
-    kucoinMarketDataMap: kucoinMarketDataMap$ | async
-  }; as content) {
-    @for (ompfinexCurrency of ompfinexCurrenciesMap.values(); track ompfinexCurrency.id) {
-      <div class="bg-neutral-300 border border-solid border-neutral-50 p-2 rounded-md overflow-clip">
-        <div class="flex w-full justify-between mb-2">
-          <strong>{{ ompfinexCurrency.name }}</strong>
-          <div class="flex items-center gap-2">
-            <span>{{ ompfinexCurrency.id }}</span>
-            <img [ngSrc]="ompfinexCurrency.icon_path" width="14" height="14" alt="currency icon">
-          </div>
-        </div>
-        @if ((kucoinMessage$ | async); as kucoin) {
-          @if (kucoin.get(ompfinexCurrency.id)?.data; as kucoinCurrency) {
-            <div class="flex items-center gap-2">
-              <img [ngSrc]="kucoinIconPath" width="14" height="14" alt="kucoin_icon"
-                   class="w-3.5 h-3.5 rounded-full overflow-clip object-cover">
-              <span class="font-mono slashed-zero">{{ kucoinCurrency.lastTradedPrice }}</span>
-            </div>
-          }
-        }
+  @if (intersectionMarket$ | async; as intersectionMarkets) {
+<!--    @for (intersectionMarket of intersectionMarkets.values(); track intersectionMarket.baseCurrency) {-->
+      <div class="overflow-clip rounded-md shadow bg-neutral-800 p-2">
+<!--        <div>{{intersectionMarket.baseCurrency}}</div>-->
+<!--        <div>{{intersectionMarket.volValue}}</div>-->
+<!--        <div>{{intersectionMarket.vol}}</div>-->
+<!--        <div>{{intersectionMarket.lastTradedPrice}}</div>-->
       </div>
-    }
+<!--    }-->
   }
 </div>

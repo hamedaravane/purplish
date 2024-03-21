@@ -15,6 +15,7 @@ import {DashboardFacade} from '@market/data-access/dashboard.facade';
 })
 export class DashboardComponent implements OnInit {
   private readonly dashboardFacade = inject(DashboardFacade);
+  readonly intersectionMarket$ = this.dashboardFacade.intersectionMarket$;
 
   ngOnInit() {
     this.dashboardFacade.initWebSocket();
