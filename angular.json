@@ -73,10 +73,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "purplish:build",
-            "proxyConfig": "src/proxy.conf.mjs",
-            "port": 4200,
-            "host": "0.0.0.0"
+            "buildTarget": "purplish:build",
+            "proxyConfig": "src/proxy.conf.mjs"
           },
           "configurations": {
             "production": {

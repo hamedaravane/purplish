@@ -1,16 +1,14 @@
-export default [
+const proxyConfig = [
   {
-    context: ['/v1','/v2','/v3','/v4'],
-    target: 'https://api.ompfinex.com',
+    context: ['/v1/*', '/v2/*', '/v3/*', '/v4/*'],
+    target: {
+      host: "api.ompfinex.com",
+      protocol: "https:",
+      port: 443
+    },
     secure: false,
     changeOrigin: true,
-    logLevel: 'info',
-  },
-  {
-    context: ['/api'],
-    target: 'https://api.kucoin.com',
-    secure: false,
-    changeOrigin: true,
-    logLevel: 'info',
+    logLevel: 'error'
   }
 ]
+export default proxyConfig;
