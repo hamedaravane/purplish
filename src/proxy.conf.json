@@ -1,0 +1,24 @@
+{
+  "/v1/*": {
+    "target": "https://api.ompfinex.com",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "error",
+    "agent": {
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    }
+  },
+  "/api/*": {
+    "target": "https://api.kucoin.com",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "error",
+    "agent": {
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    }
+  }
+}
