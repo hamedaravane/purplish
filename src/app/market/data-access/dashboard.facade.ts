@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {combineLatest, firstValueFrom} from 'rxjs';
+import {firstValueFrom} from 'rxjs';
 import {OmpfinexInfra} from '@market/infrastructure/ompfinex.infra';
 import {KucoinWebsocket} from '@market/infrastructure/websocket/kucoin.websocket';
 import {OmpfinexWebsocket} from '@market/infrastructure/websocket/ompfinex.websocket';
@@ -13,10 +13,7 @@ export class DashboardFacade {
   private readonly kucoinWebSocket = inject(KucoinWebsocket);
   private readonly ompfinexWebsocket = inject(OmpfinexWebsocket);
   private readonly marketStore = inject(MarketStore);
-  readonly kucoinIconPath = this.marketStore.kucoinIconPath;
-  readonly intersectionMarket$ = combineLatest(
-    [this.marketStore.kucoinWebsocketMarketSubject]
-  );
+  readonly intersectionMarket$ = this.marketStore.intersectionMarketSubject.asObservable();
 
   initWebSocket() {
     this.getOmpfinexMarkets();

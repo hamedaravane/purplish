@@ -1,12 +1,24 @@
-<div class="grid xl:grid-cols-7 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 gap-2">
-  @if (intersectionMarket$ | async; as intersectionMarkets) {
-<!--    @for (intersectionMarket of intersectionMarkets.values(); track intersectionMarket.baseCurrency) {-->
+<div class="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 gap-2">
+  @if (intersectionMarketsMap$ | async; as intersectionMarketsMap) {
+    @for (intersectionMarket of intersectionMarketsMap.values(); track intersectionMarket.currencyId) {
       <div class="overflow-clip rounded-md shadow bg-neutral-800 p-2">
-<!--        <div>{{intersectionMarket.baseCurrency}}</div>-->
-<!--        <div>{{intersectionMarket.volValue}}</div>-->
-<!--        <div>{{intersectionMarket.vol}}</div>-->
-<!--        <div>{{intersectionMarket.lastTradedPrice}}</div>-->
+        <div>
+          <img [ngSrc]="intersectionMarket.currencyIconPath" [alt]="intersectionMarket.currencyId" width="14"
+               height="14" class="max-h-3.5 me-2">
+          <span>{{ intersectionMarket.currencyName }}</span>
+        </div>
+        <div>
+          <div>اطلاعات در کوکوین:</div>
+          <div>
+            <span>قیمت لحظه‌ای</span>
+            <span>{{ intersectionMarket.kucoin.lastTradedPrice }}</span>
+          </div>
+          <div>
+            <span>حجم بازار</span>
+            <span>{{ intersectionMarket.kucoin.volValue }}</span>
+          </div>
+        </div>
       </div>
-<!--    }-->
+    }
   }
 </div>
