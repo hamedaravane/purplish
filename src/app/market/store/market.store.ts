@@ -2,12 +2,13 @@ import {Injectable} from '@angular/core';
 import {combineLatest, map, Subject} from 'rxjs';
 import {OmpfinexMarketDto, ompfinexResponseWS} from '@market/entity/ompfinex.entity';
 import {MarketData} from '@market/entity/kucoin.entity';
+import {environment} from "@environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MarketStore {
-  readonly kucoinIconPath: string = "https://assets.staticimg.com/cms/media/3gfl2DgVUqjJ8FnkC7QxhvPmXmPgpt42FrAqklVMr.png";
+  readonly kucoinIconPath = environment.kucoinIconPath;
   readonly kucoinCurrencyMap = new Map<string, MarketData>();
   readonly kucoinWebsocketMarketSubject = new Subject<Map<string, MarketData>>();
   readonly ompfinexMarketsDtoSubject = new Subject<OmpfinexMarketDto[]>();

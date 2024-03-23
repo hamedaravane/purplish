@@ -1,21 +1,25 @@
-<div class="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 gap-2">
+<div class="grid xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3 gap-2">
   @if (intersectionMarketsMap$ | async; as intersectionMarketsMap) {
     @for (intersectionMarket of intersectionMarketsMap.values(); track intersectionMarket.currencyId) {
-      <div class="overflow-clip rounded-md shadow bg-neutral-800 p-2">
-        <div>
+      <div class="overflow-clip rounded-md shadow bg-neutral-800 border-solid border border-neutral-600 p-2">
+        <div class="text-center mb-2 pb-2 border-b border-solid border-neutral-600">
           <img [ngSrc]="intersectionMarket.currencyIconPath" [alt]="intersectionMarket.currencyId" width="14"
                class="inline-block max-h-3.5 me-2" height="14">
           <span>{{ intersectionMarket.currencyName }}</span>
         </div>
         <div>
-          <div>اطلاعات در کوکوین:</div>
+          <div class="mb-2">
+            <img [ngSrc]="intersectionMarket.kucoin.exchangeIcon" alt="kucoin icon" width="14" height="14"
+                 class="overflow-clip rounded-full max-h-3.5 inline-block me-2">
+            <span>کوکوین</span>
+          </div>
           <div class="flex justify-between items-center w-full">
             <span>قیمت لحظه‌ای</span>
-            <span>{{ intersectionMarket.kucoin.lastTradedPrice }}</span>
+            <span class="font-mono overflow-y-clip inline-block" [@numberAnimate]="intersectionMarket.kucoin.lastTradedPrice">{{ intersectionMarket.kucoin.lastTradedPrice | number: '1.2-10' }}</span>
           </div>
           <div class="flex justify-between items-center w-full">
             <span>حجم بازار</span>
-            <span>{{ intersectionMarket.kucoin.volValue }}</span>
+            <span class="font-mono overflow-y-clip inline-block" [@numberAnimate]="intersectionMarket.kucoin.volValue">{{ intersectionMarket.kucoin.volValue | number: '1.2-4' }}</span>
           </div>
         </div>
       </div>

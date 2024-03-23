@@ -4,6 +4,7 @@ import {firstValueFrom} from "rxjs";
 import {KucoinInfra} from "@market/infrastructure/kucoin.infra";
 import {KucoinWebsocketMessage} from "@market/entity/kucoin.entity";
 import {MarketStore} from '@market/store/market.store';
+import {environment} from "@environment";
 
 @Injectable({
   providedIn: "root"
@@ -15,7 +16,7 @@ export class KucoinWebsocket extends WebsocketAbstract {
 
   async init() {
     const bulletResponse = await firstValueFrom(this.kucoinInfra.getKucoinPublicBulletResponse());
-    this.endpoint = this.kucoinInfra.kucoinWebsocketSpotBaseUrl + bulletResponse.data.token;
+    this.endpoint = environment.kucoinStreamBaseUrl + bulletResponse.data.token;
     const instanceServer = bulletResponse.data.instanceServers.reduce(previousValue => previousValue);
     const pingMessage = {type: 'ping'};
     this.connect();
@@ -45,6 +46,7 @@ export class KucoinWebsocket extends WebsocketAbstract {
 
   protected override onError(err: Error): void {
     console.warn('in kucoin websocket error happened!');
+    this.disconnect();
     this.init().then();
   }
 }

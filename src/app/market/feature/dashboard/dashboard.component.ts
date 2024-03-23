@@ -1,6 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {AsyncPipe, NgOptimizedImage, NgTemplateOutlet} from "@angular/common";
+import {AsyncPipe, DecimalPipe, NgOptimizedImage, NgTemplateOutlet} from "@angular/common";
 import {DashboardFacade} from '@market/data-access/dashboard.facade';
+import {numberAnimation} from "@market/util/number.animation";
 
 @Component({
   selector: 'app-dashboard',
@@ -8,10 +9,12 @@ import {DashboardFacade} from '@market/data-access/dashboard.facade';
   imports: [
     NgOptimizedImage,
     AsyncPipe,
-    NgTemplateOutlet
+    NgTemplateOutlet,
+    DecimalPipe
   ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrl: './dashboard.component.scss',
+  animations: [numberAnimation]
 })
 export class DashboardComponent implements OnInit {
   private readonly dashboardFacade = inject(DashboardFacade);

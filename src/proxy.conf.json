@@ -1,24 +1,14 @@
 {
   "/v1/*": {
-    "target": "https://api.ompfinex.com",
+    "target": "http://localhost:3000/omp",
     "secure": false,
     "changeOrigin": true,
-    "logLevel": "error",
-    "agent": {
-      "headers": {
-        "Access-Control-Allow-Origin": "*"
-      }
-    }
+    "logLevel": "error"
   },
   "/api/*": {
-    "target": "https://api.kucoin.com",
+    "target": "http://localhost:3000/kucoin",
     "secure": false,
     "changeOrigin": true,
-    "logLevel": "error",
-    "agent": {
-      "headers": {
-        "Access-Control-Allow-Origin": "*"
-      }
-    }
+    "logLevel": "error"
   }
 }

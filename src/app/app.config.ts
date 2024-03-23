@@ -7,6 +7,7 @@ import en from '@angular/common/locales/en';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {provideAnimations} from '@angular/platform-browser/animations';
+import {httpInterceptorProviders} from "./http-interceptors";
 
 registerLocaleData(en);
 
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideNzI18n(en_US),
     importProvidersFrom(FormsModule),
     importProvidersFrom(HttpClientModule),
-    provideAnimations()
+    httpInterceptorProviders,
+    provideAnimations(),
   ]
 };
