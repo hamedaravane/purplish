@@ -9,7 +9,7 @@ export abstract class CentrifugeAbstract {
   protected client!: Centrifuge;
 
   protected connect(): void {
-    this.client = new Centrifuge(this.endpoint, {debug: true});
+    this.client = new Centrifuge(this.endpoint, {timeout: 5000});
 
     this.client.on('connecting', (ctx) => {
       console.log('connecting', ctx);
@@ -24,7 +24,7 @@ export abstract class CentrifugeAbstract {
     });
 
     this.client.on('error', (ctx) => {
-      console.log('client error', ctx);
+      console.warn('client error', ctx);
     });
 
     this.client.connect();
