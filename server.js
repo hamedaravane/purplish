@@ -3,8 +3,7 @@ const cors = require('cors')
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
 const app = express()
-app.use(cors({credentials: true}))
-const customUserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36';
+app.use(cors());
 const kucoinProxy = createProxyMiddleware({
   target: 'https://api.kucoin.com',
   changeOrigin: true,
@@ -15,11 +14,7 @@ const kucoinProxy = createProxyMiddleware({
 app.use('/kucoin/*', kucoinProxy);
 
 const ompProxy = createProxyMiddleware({
-  target: {
-    host: 'api.ompfinex.com',
-    protocol: 'https:',
-    port: 443
-  },
+  target: 'https://api.ompfinex.com',
   changeOrigin: true,
   secure: false,
   pathRewrite: { '^/omp': '' },
@@ -30,6 +25,13 @@ const ompProxy = createProxyMiddleware({
 });
 
 app.use('/omp/*', ompProxy);
+
+const streamProxy = createProxyMiddleware({
+  target: 'http://localhost:3000',
+  pathFilter: '/stream',
+  ws: true,
+});
+
 
 const port = 3000;
 app.listen(port, () => {

@@ -1,14 +1,20 @@
 {
   "/v1/*": {
-    "target": "http://localhost:3000/omp",
+    "target": "https://api.ompfinex.com",
     "secure": false,
     "changeOrigin": true,
-    "logLevel": "error"
+    "logLevel": "error",
+    "pathRewrite": {
+      "^/v1": ""
+    }
   },
   "/api/*": {
-    "target": "http://localhost:3000/kucoin",
+    "target": "https://api.kucoin.com",
     "secure": false,
     "changeOrigin": true,
-    "logLevel": "error"
+    "logLevel": "error",
+    "pathRewrite": {
+      "^/api": ""
+    }
   }
 }
