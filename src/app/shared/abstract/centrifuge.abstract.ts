@@ -1,12 +1,11 @@
 import {Injectable} from "@angular/core";
-import {Centrifuge} from "centrifuge";
+import {Centrifuge, Subscription} from 'centrifuge';
 
 @Injectable({
   providedIn: "root"
 })
 export abstract class CentrifugeAbstract {
-  protected abstract endpoint: string;
-  protected client = new Centrifuge(this.endpoint, {timeout: 5000});
+  protected abstract client: Centrifuge;
 
   protected connect(): void {
     this.client.on('connecting', (ctx) => {
@@ -29,7 +28,7 @@ export abstract class CentrifugeAbstract {
   }
 
   protected subscribe(channel: string, data?: any) {
-    const sub = this.client.newSubscription(channel, {data});
+    const sub: Subscription = this.client.newSubscription(channel, {data});
 
     sub.on('subscribing', (ctx) => {
       console.log('subscribing', ctx);

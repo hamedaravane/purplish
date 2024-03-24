@@ -16,9 +16,9 @@ export class DashboardFacade {
   readonly intersectionMarket$ = this.marketStore.intersectionMarketSubject.asObservable();
 
   initWebSocket() {
-    this.getOmpfinexMarkets();
+    // this.getOmpfinexMarkets();
     this.ompfinexWebsocket.init();
-    this.kucoinWebSocket.init().then();
+    // this.kucoinWebSocket.init().then();
   }
 
   getOmpfinexMarkets() {
