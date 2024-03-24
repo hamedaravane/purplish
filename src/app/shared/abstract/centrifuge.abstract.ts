@@ -6,11 +6,9 @@ import {Centrifuge} from "centrifuge";
 })
 export abstract class CentrifugeAbstract {
   protected abstract endpoint: string;
-  protected client!: Centrifuge;
+  protected client = new Centrifuge(this.endpoint, {timeout: 5000});
 
   protected connect(): void {
-    this.client = new Centrifuge(this.endpoint, {timeout: 5000});
-
     this.client.on('connecting', (ctx) => {
       console.log('connecting', ctx);
     });
