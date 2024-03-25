@@ -3,6 +3,7 @@ import {combineLatest, map, Subject} from 'rxjs';
 import {OmpfinexMarketDto, ompfinexResponseWS} from '@market/entity/ompfinex.entity';
 import {MarketData} from '@market/entity/kucoin.entity';
 import {environment} from "@environment";
+import {BinanceStreamData} from "@market/entity/binance.entity";
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +17,12 @@ export class MarketStore {
   readonly ompfinexMarketResponseWSSubject = new Subject<ompfinexResponseWS>();
   readonly intersectionMarketMap = new Map<string, any>();
   readonly intersectionMarketSubject = new Subject<Map<string, any>>();
+  readonly binanceMarketDtoMap = new Map<string, BinanceStreamData>()
+  readonly binanceMarketDtoMapSubject = new Subject<Map<string, BinanceStreamData>>()
   readonly intersection$ = combineLatest(
-    [this.kucoinWebsocketMarketSubject]
+    [this.kucoinWebsocketMarketSubject, this.binanceMarketDtoMapSubject]
   ).pipe(
-    map(([kucoinWS]) => {
+    map(([kucoinWS, binanceWS]) => {
       let kucoinWSCustomData;
       kucoinWS.forEach((value, key) => {
         if (!this.ompfinexMarketDtoMap.has(key)) {
@@ -49,7 +52,7 @@ export class MarketStore {
             currencyName: this.ompfinexMarketDtoMap.get(key)!.base_currency.name,
             kucoin: kucoinWSCustomData,
             omp: null,
-            binance: null
+            binance: binanceWS.get(key)
           })
           this.intersectionMarketSubject.next(this.intersectionMarketMap);
         }

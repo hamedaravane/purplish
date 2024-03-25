@@ -4,6 +4,7 @@ import {OmpfinexInfra} from '@market/infrastructure/ompfinex.infra';
 import {KucoinWebsocket} from '@market/infrastructure/websocket/kucoin.websocket';
 import {OmpfinexWebsocket} from '@market/infrastructure/websocket/ompfinex.websocket';
 import {MarketStore} from '@market/store/market.store';
+import {BinanceWebsocket} from "@market/infrastructure/websocket/binance.websocket";
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,15 @@ export class DashboardFacade {
   private readonly ompfinexInfra = inject(OmpfinexInfra);
   private readonly kucoinWebSocket = inject(KucoinWebsocket);
   private readonly ompfinexWebsocket = inject(OmpfinexWebsocket);
+  private readonly _binanceWebsocket = inject(BinanceWebsocket)
   private readonly marketStore = inject(MarketStore);
   readonly intersectionMarket$ = this.marketStore.intersectionMarketSubject.asObservable();
 
   initWebSocket() {
-    // this.getOmpfinexMarkets();
+    this.getOmpfinexMarkets();
     this.ompfinexWebsocket.init();
-    // this.kucoinWebSocket.init().then();
+    this.kucoinWebSocket.init().then();
+    this._binanceWebsocket.init()
   }
 
   getOmpfinexMarkets() {
