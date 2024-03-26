@@ -9,7 +9,13 @@ import {Centrifuge} from "centrifuge";
 })
 export class OmpfinexWebsocket extends CentrifugeAbstract {
   private readonly marketStore = inject(MarketStore);
-  protected client = new Centrifuge(environment.ompfinexStreamBaseUrl);
+  protected client = new Centrifuge(environment.ompfinexStreamBaseUrl,
+    {
+      data: {
+        "Allowed-Origins": "*",
+        "Accept-Encoding": "*/*"
+      }
+    });
 
   init() {
     this.connect();
