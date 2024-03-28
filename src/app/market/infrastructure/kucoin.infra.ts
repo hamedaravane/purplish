@@ -8,10 +8,7 @@ import {environment} from "@environment";
   providedIn: 'root'
 })
 export class KucoinInfra extends InfraAbstract {
-  readonly kucoinWebsocketSpotBaseUrl = environment.kucoinStreamBaseUrl;
-  private readonly kucoinSpotBaseUrl = environment.kucoinApiBaseUrl;
-
   getKucoinPublicBulletResponse(): Observable<KucoinPublicBulletResponse> {
-    return this.httpClient.post<KucoinPublicBulletResponse>(`${this.kucoinSpotBaseUrl}/api/${this.versionsEnum.V1}/bullet-public`, null)
+    return this.httpClient.get<KucoinPublicBulletResponse>(`${environment.baseUrl}/kucoin/token`);
   }
 }

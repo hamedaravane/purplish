@@ -4,6 +4,7 @@ export const environment = {
   platform: 'web',
   bundleVersionCode: 110,
   applicationName: 'Purplish',
+  baseUrl: 'http://localhost:3000',
   ompfinexApiBaseUrl: 'https://api.ompfinex.com',
   ompfinexStreamBaseUrl: 'wss://stream.ompfinex.com/stream',
   ompfinexOrigin: 'ompfinex.com',

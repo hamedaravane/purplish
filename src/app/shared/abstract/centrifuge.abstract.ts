@@ -5,9 +5,12 @@ import {Centrifuge, Subscription} from 'centrifuge';
   providedIn: "root"
 })
 export abstract class CentrifugeAbstract {
-  protected abstract client: Centrifuge;
+  protected abstract endpoint: string;
+  protected client!: Centrifuge;
 
   protected connect(): void {
+    this.client = new Centrifuge(this.endpoint);
+
     this.client.on('connecting', (ctx) => {
       console.log('connecting', ctx);
     });

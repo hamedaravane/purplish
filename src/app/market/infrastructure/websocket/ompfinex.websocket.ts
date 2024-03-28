@@ -7,18 +7,5 @@ import {Centrifuge} from "centrifuge";
 @Injectable({
   providedIn: "root"
 })
-export class OmpfinexWebsocket extends CentrifugeAbstract {
-  private readonly marketStore = inject(MarketStore);
-  protected client = new Centrifuge(environment.ompfinexStreamBaseUrl,
-    {
-      data: {
-        "Allowed-Origins": "*",
-        "Accept-Encoding": "*/*"
-      }
-    });
-
-  init() {
-    this.connect();
-    this.subscribe('public-market:r-price-ag');
-  }
+export class OmpfinexWebsocket {
 }

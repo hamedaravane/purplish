@@ -22,5 +22,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.dashboardFacade.initWebSocket();
+    this.dashboardFacade.getOmpfinexMarkets();
   }
 }

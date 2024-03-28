@@ -8,16 +8,8 @@ import {environment} from "@environment";
   providedIn: "root"
 })
 export class OmpfinexInfra extends InfraAbstract {
-  ompfinexApiBaseUrl = environment.ompfinexApiBaseUrl;
-  ompfinexWebsocketApiBaseUrl = environment.ompfinexStreamBaseUrl;
-
-  getOmpfinexCurrencies() {
-    return this.httpClient.get<OmpfinexDataResponse<OmpfinexCurrency[]>>(`${this.ompfinexApiBaseUrl}/${this.versionsEnum.V2}/currencies`)
-      .pipe(map((res) => res.data));
-  }
-
   getOmpfinexMarkets() {
-    return this.httpClient.get<OmpfinexDataResponse<OmpfinexMarketDto[]>>(`${this.ompfinexApiBaseUrl}/${this.versionsEnum.V1}/market`)
+    return this.httpClient.get<OmpfinexDataResponse<OmpfinexMarketDto[]>>(`${environment.baseUrl}/omp/markets`)
       .pipe(map((res) => res.data));
   }
 }
