@@ -3,7 +3,7 @@ import {environment} from "@environment";
 import {WebsocketAbstract} from "@shared/abstract/websocket.abstract";
 import {convertOmpfinexMarketWebsocket, OmpfinexMarketWebsocketDto} from "@market/entity/ompfinex.entity";
 import {MarketStore} from "@market/store/market.store";
-import {of, combineLatest, map} from "rxjs";
+import {combineLatest, map, of} from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -17,8 +17,8 @@ export class OmpfinexWebsocket extends WebsocketAbstract {
   }
 
   protected handleMessages(message: { data: OmpfinexMarketWebsocketDto[] }): void {
-    this.marketStore.ompfinexMarketsWebSocket$ = combineLatest(
-      [of(message.data), this.marketStore.ompfinexMarkets$]
+    combineLatest(
+      [of(message.data), this.marketStore.ompfinexMarketsSubject]
     ).pipe(
       map(([wsData, markets]) => {
         return convertOmpfinexMarketWebsocket(wsData, markets);
