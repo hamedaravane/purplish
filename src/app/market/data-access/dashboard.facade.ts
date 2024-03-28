@@ -20,17 +20,10 @@ export class DashboardFacade {
   initWebSocket() {
     this.ompfinexWebsocket.init();
     this.kucoinWebsocket.init().then();
-    this.binanceWebsocket.init()
+    this.binanceWebsocket.init();
   }
 
   getOmpfinexMarkets() {
-    firstValueFrom(this.ompfinexInfra.getOmpfinexMarkets()).then((res) => {
-      this.marketStore.ompfinexMarketsDtoSubject.next(res);
-      res.map((market) => {
-        if (market.quote_currency.id === 'USDT') {
-          this.marketStore.ompfinexMarketDtoMap.set(market.base_currency.id, market);
-        }
-      });
-    });
+    this.marketStore.ompfinexMarkets$ = this.ompfinexInfra.getOmpfinexMarkets();
   }
 }

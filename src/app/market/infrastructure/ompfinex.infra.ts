@@ -1,8 +1,9 @@
-import {Injectable} from "@angular/core";
+import {inject, Injectable} from "@angular/core";
 import {InfraAbstract} from "@shared/abstract/infra.abstract";
 import {convertToOmpfinexMarketDomain, OmpfinexDataResponse, OmpfinexMarketDto} from "@market/entity/ompfinex.entity";
 import {map} from "rxjs";
 import {environment} from "@environment";
+import {MarketStore} from "@market/store/market.store";
 
 @Injectable({
   providedIn: "root"
