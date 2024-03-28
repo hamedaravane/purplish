@@ -1,8 +1,8 @@
-
 export interface BinanceSocket{
   data: BinanceStreamDataDto,
   stream: string
 }
+
 export interface BinanceStreamDataDto {
   e: string;  // Event type
   E: number;  // Event time

@@ -1,7 +1,7 @@
 import {WebsocketAbstract} from "@shared/abstract/websocket.abstract";
 import {MarketStore} from "@market/store/market.store";
 import {inject, Injectable} from "@angular/core";
-import {filter, map} from "rxjs";
+import {map} from "rxjs";
 import {environment} from "@environment";
 import {BinanceSocket, BinanceStreamData, convertToBinanceDto} from "@market/entity/binance.entity";
 
@@ -9,14 +9,14 @@ import {BinanceSocket, BinanceStreamData, convertToBinanceDto} from "@market/ent
   providedIn: 'root'
 })
 export class BinanceWebsocket extends WebsocketAbstract{
-  private _marketStore = inject(MarketStore)
-  private _binanceMarketMap = new Map<string, BinanceStreamData>()
+  private marketStore = inject(MarketStore)
+  private binanceMarketMap = new Map<string, BinanceStreamData>()
   protected endpoint!: string;
 
 
   init(){
     this.endpoint = 'wss://stream.binance.com:9443/stream'
-    this._marketStore.ompfinexMarketsDtoSubject
+    this.marketStore.ompfinexMarketsDtoSubject
       .pipe(
         map(markets => markets.filter(market => market.quote_currency.id === 'USDT')),
         map(markets => markets.map(market => market.base_currency.id.toLowerCase() + market.quote_currency.id.toLowerCase()))
@@ -35,8 +35,8 @@ export class BinanceWebsocket extends WebsocketAbstract{
   }
   protected handleMessages(message: BinanceSocket): void {
     const binanceMarketData = convertToBinanceDto(message)
-    this._binanceMarketMap.set(binanceMarketData.symbol.slice(0,binanceMarketData.symbol.indexOf('USDT')), binanceMarketData)
-    this._marketStore.binanceMarketDtoMapSubject.next(this._binanceMarketMap)
+    this.binanceMarketMap.set(binanceMarketData.symbol.slice(0, binanceMarketData.symbol.indexOf('USDT')), binanceMarketData)
+    this.marketStore.binanceMarketDtoMapSubject.next(this.binanceMarketMap)
   }
 
   protected onComplete(): void {
@@ -46,5 +46,4 @@ export class BinanceWebsocket extends WebsocketAbstract{
     this.disconnect();
     this.init()
   }
-
 }

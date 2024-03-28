@@ -1,9 +1,6 @@
 import {inject, Injectable} from "@angular/core";
 import {OmpfinexWebsocket} from "@market/infrastructure/websocket/ompfinex.websocket";
-import {OmpfinexCurrency, OmpfinexMarket, OmpfinexMarketDto} from "@market/entity/ompfinex.entity";
-import {OmpfinexInfra} from "@market/infrastructure/ompfinex.infra";
-import {firstValueFrom, map} from "rxjs";
-
+import {OmpfinexMarketDto} from "@market/entity/ompfinex.entity";
 
 @Injectable({
   providedIn: "root"
@@ -11,7 +8,12 @@ import {firstValueFrom, map} from "rxjs";
 export class OmpfinexFacade {
   private readonly ompfinexWebsocket = inject(OmpfinexWebsocket);
   ompfinexMarkets!: OmpfinexMarketDto[];
-  ompfinexMarketWebsocket$ = this.ompfinexWebsocket.messages$.pipe(
+
+  init() {
+    this.ompfinexWebsocket.init();
+  }
+
+  /*ompfinexMarketWebsocket$ = this.ompfinexWebsocket.messages$.pipe(
     map((markets) => {
       let result = new Array<OmpfinexMarket>();
       markets.map((market) => {
@@ -32,5 +34,5 @@ export class OmpfinexFacade {
       })
       return result;
     })
-  );
+  );*/
 }
