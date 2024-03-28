@@ -3,6 +3,11 @@ export interface OmpfinexDataResponse<T> {
   data: T;
 }
 
+/**
+ * @deprecated
+ * We do not need this model anymore. use market model, instead.
+ * @author Hamed
+ */
 export interface OmpfinexCurrency {
   id: string;
   name: string;
@@ -13,6 +18,17 @@ export interface OmpfinexCurrency {
   category: {
     slug: null
   }
+}
+
+/**
+ * this interface only use in currency interface. and we do not need it.
+ */
+export interface OmpfinexNetworkCurrency {
+  network: string;
+  withdraw_enabled: boolean,
+  deposit_enabled: boolean,
+  withdraw_fee: string;
+  minimum_withdraw_amount: string;
 }
 
 interface OmpfinexMarketCurrency {
@@ -36,75 +52,74 @@ export interface OmpfinexMarketDto {
 
 export interface OmpfinexMarket {
   id: number;
-  baseCurrencyId: string;
-  baseCurrencyIconPath: string;
-  baseCurrencyName: string;
-  quoteCurrencyId: string;
-  quoteCurrencyIconPath: string;
-  quoteCurrencyName: string;
-  price: string;
-  volume: string;
+  baseCurrency: {
+    id: string;
+    iconPath: string;
+    name: string;
+  };
+  quoteCurrency: {
+    id: string;
+    iconPath: string;
+    name: string;
+  };
+  name: string;
 }
 
-export interface OmpfinexNetworkCurrency {
-  network: string;
-  withdraw_enabled: boolean,
-  deposit_enabled: boolean,
-  withdraw_fee: string;
-  minimum_withdraw_amount: string;
-}
-
-export type ompfinexResponseWS =
-  | ompfinexSubscribeAcknowledgeWSChannel
-  | ompfinexConnectWSResponse
-  | ompfinexPushWSData;
-
-export interface ompfinexSubscribeAcknowledgeWSChannel {
-  id: number;
-  subscribe: {};
-}
-
-export interface ompfinexConnectWSResponse {
-  id: number;
-  connect: {
-    client: string;
-    version: string;
-    ping: number;
-    pong: boolean;
-  }
-}
-
-export interface ompfinexPushWSData {
-  push: {
-    channel: string;
-    pub: {
-      data: {
-        data: {
-          price: string;
-          v: string;
-          t: number;
-        }
+export function convertToOmpfinexMarketDomain(data: OmpfinexMarketDto[]): OmpfinexMarket[] {
+  return data.map((market) => {
+    return {
+      id: market.id,
+      baseCurrency: {
+        id: market.base_currency.id,
+        iconPath: market.base_currency.icon_path,
+        name: market.base_currency.name,
       },
-      offset: number;
+      quoteCurrency: {
+        id: market.quote_currency.id,
+        iconPath: market.quote_currency.icon_path,
+        name: market.quote_currency.name,
+      },
+      name: market.name,
     }
-  }
+  })
 }
 
+export interface OmpfinexMarketWebsocketDto {
+  price: string,
+  v: string,
+  t: number,
+  m: number
+}
 
-export interface ompfinexMarketRawWS {
+export interface OmpfinexMarketWebsocket {
+  id: number;
+  currencyId: string;
+  currencyName: string;
+  iconPath: string;
+  name: string;
+  timestamp: number;
+  volume: string;
   price: string;
-  t: number;
-  v: string;
-  m: number;
 }
 
-export interface ompfinexHistoryPublicationRawWS {
-  data: ompfinexPublicationRawWS[];
-  offset: number;
-}
-
-export interface ompfinexPublicationRawWS {
-  a: string;
-  p: string;
-  t: 'buy' | 'sell';
+export function convertOmpfinexMarketWebsocket(
+  websocketDto: OmpfinexMarketWebsocketDto[],
+  markets: OmpfinexMarket[]
+): OmpfinexMarketWebsocket[] {
+  const wsDtoMap = new Map(websocketDto.map(item => [item.m, item]));
+  return markets.filter(market => market.quoteCurrency.id === 'USDT')
+    .map(market => {
+      const wsItem = wsDtoMap.get(market.id);
+      return wsItem ? {
+        id: market.id,
+        currencyId: market.baseCurrency.id,
+        currencyName: market.baseCurrency.name,
+        iconPath: market.baseCurrency.iconPath,
+        name: market.name,
+        timestamp: wsItem.t,
+        volume: wsItem.v,
+        price: wsItem.price
+      } : null;
+    })
+    .filter(item => item !== null) as OmpfinexMarketWebsocket[];
 }

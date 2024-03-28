@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {environment} from "@environment";
 import {WebsocketAbstract} from "@shared/abstract/websocket.abstract";
+import {OmpfinexMarketWebsocketDto} from "@market/entity/ompfinex.entity";
 
 @Injectable({
   providedIn: "root"
@@ -12,7 +13,7 @@ export class OmpfinexWebsocket extends WebsocketAbstract {
     this.connect();
   }
 
-  protected handleMessages(message: any): void {
+  protected handleMessages(message: { data: OmpfinexMarketWebsocketDto[] }): void {
     console.log(message);
   }
 
