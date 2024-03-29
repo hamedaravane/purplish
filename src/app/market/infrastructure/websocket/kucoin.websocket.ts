@@ -2,7 +2,7 @@ import {inject, Injectable} from "@angular/core";
 import {WebsocketAbstract} from "@shared/abstract/websocket.abstract";
 import {firstValueFrom} from "rxjs";
 import {KucoinInfra} from "@market/infrastructure/kucoin.infra";
-import {KucoinWebsocketMessage} from "@market/entity/kucoin.entity";
+import {KucoinPublicBulletResponse, KucoinWebsocketMessage} from "@market/entity/kucoin.entity";
 import {MarketStore} from '@market/store/market.store';
 import {environment} from "@environment";
 
@@ -13,11 +13,15 @@ export class KucoinWebsocket extends WebsocketAbstract {
   protected endpoint!: string;
   private readonly kucoinInfra = inject(KucoinInfra);
   private readonly marketStore = inject(MarketStore);
+  private bulletResponse!: KucoinPublicBulletResponse;
 
-  async init() {
-    const bulletResponse = await firstValueFrom(this.kucoinInfra.getKucoinPublicBulletResponse());
-    this.endpoint = environment.kucoinStreamBaseUrl + bulletResponse.data.token;
-    const instanceServer = bulletResponse.data.instanceServers.reduce(previousValue => previousValue);
+  async getBulletResponse() {
+    this.bulletResponse = await firstValueFrom(this.kucoinInfra.getKucoinPublicBulletResponse());
+  }
+
+  init() {
+    this.endpoint = environment.kucoinStreamBaseUrl + this.bulletResponse.data.token;
+    const instanceServer = this.bulletResponse.data.instanceServers.reduce(previousValue => previousValue);
     const pingMessage = {type: 'ping'};
     this.connect();
     this.keepAlive(instanceServer.pingInterval, pingMessage, instanceServer.pingTimeout);
@@ -47,6 +51,6 @@ export class KucoinWebsocket extends WebsocketAbstract {
   protected override onError(err: Error): void {
     console.warn('in kucoin websocket error happened!');
     this.disconnect();
-    this.init().then();
+    this.connect();
   }
 }

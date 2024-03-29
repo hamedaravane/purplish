@@ -15,5 +15,6 @@ export interface IntersectedMarket {
     volume?: number;
     price?: number;
     diffPrice?: number;
+    diffPricePercent?: number;
   }
 }
