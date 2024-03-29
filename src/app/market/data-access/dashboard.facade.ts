@@ -14,16 +14,9 @@ import {environment} from "@environment";
 })
 export class DashboardFacade {
   private readonly marketStore = inject(MarketStore);
-  private readonly ompfinexInfra = inject(OmpfinexInfra);
   private readonly ompfinexWebsocket = inject(OmpfinexWebsocket);
   private readonly kucoinWebsocket = inject(KucoinWebsocket);
   private readonly binanceWebsocket = inject(BinanceWebsocket);
-
-  getOmpfinexMarkets() {
-    firstValueFrom(this.ompfinexInfra.getOmpfinexMarkets()).then((markets) => {
-      this.marketStore.ompfinexMarketsSubject.next(markets);
-    });
-  }
 
   initWebSocket() {
     this.ompfinexWebsocket.init();
@@ -33,7 +26,7 @@ export class DashboardFacade {
 
   combineMarkets() {
     this.marketStore.intersectedMarkets$ = combineLatest([
-      this.marketStore.ompfinexMarketsWebSocket$, this.marketStore.kucoinWebsocketMarketSubject
+      this.marketStore.ompfinexMarketsWebSocketSubject, this.marketStore.kucoinWebsocketMarketSubject
     ]).pipe(map(([omp, kucoin]) => {
       return omp.map((market) => {
         const kucoinFound = kucoin.get(market.currencyId);

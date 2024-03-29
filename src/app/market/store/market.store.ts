@@ -10,9 +10,7 @@ import {IntersectedMarket} from "@market/entity/market.entity";
   providedIn: 'root'
 })
 export class MarketStore {
-  readonly ompfinexMarketsSubject = new Subject<OmpfinexMarket[]>();
-  ompfinexMarketsWebSocket$ = new Subject<OmpfinexMarketWebsocket[]>();
-  readonly kucoinIconPath = environment.kucoinIconPath;
+  readonly ompfinexMarketsWebSocketSubject = new Subject<OmpfinexMarketWebsocket[]>();
   readonly kucoinCurrencyMap = new Map<string, MarketData>();
   readonly kucoinWebsocketMarketSubject = new Subject<Map<string, MarketData>>();
   readonly binanceMarketDtoMap = new Map<string, BinanceStreamData>()

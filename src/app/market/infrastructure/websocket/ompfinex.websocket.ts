@@ -1,9 +1,14 @@
 import {inject, Injectable} from "@angular/core";
 import {environment} from "@environment";
 import {WebsocketAbstract} from "@shared/abstract/websocket.abstract";
-import {convertOmpfinexMarketWebsocket, OmpfinexMarketWebsocketDto} from "@market/entity/ompfinex.entity";
+import {
+  convertOmpfinexMarketWebsocket,
+  OmpfinexMarket,
+  OmpfinexMarketWebsocketDto
+} from "@market/entity/ompfinex.entity";
 import {MarketStore} from "@market/store/market.store";
-import {combineLatest, map, of} from "rxjs";
+import {OmpfinexInfra} from "@market/infrastructure/ompfinex.infra";
+import {firstValueFrom} from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -11,19 +16,18 @@ import {combineLatest, map, of} from "rxjs";
 export class OmpfinexWebsocket extends WebsocketAbstract {
   protected endpoint: string = environment.ompfinexStreamBaseUrl;
   private readonly marketStore = inject(MarketStore);
+  private readonly ompfinexInfra = inject(OmpfinexInfra);
+  private ompfinexMarkets!: OmpfinexMarket[];
 
   init() {
-    this.connect();
+    firstValueFrom(this.ompfinexInfra.getOmpfinexMarkets()).then((markets) => {
+      this.ompfinexMarkets = markets;
+      this.connect();
+    })
   }
 
   protected handleMessages(message: { data: OmpfinexMarketWebsocketDto[] }): void {
-    combineLatest(
-      [of(message.data), this.marketStore.ompfinexMarketsSubject]
-    ).pipe(
-      map(([wsData, markets]) => {
-        return convertOmpfinexMarketWebsocket(wsData, markets);
-      })
-    )
+    this.marketStore.ompfinexMarketsWebSocketSubject.next(convertOmpfinexMarketWebsocket(message.data, this.ompfinexMarkets))
   }
 
   protected onComplete(): void {
