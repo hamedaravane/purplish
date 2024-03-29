@@ -9,17 +9,19 @@
         </div>
         <div class="mb-2">
           <div class="mb-2">
+            <img ngSrc="assets/img/logo/ompfinex.png" [alt]="market.currencyId" width="512"
+                 class="inline-block max-h-3.5 bg-gray-200 max-w-3.5 overflow-clip rounded-full me-2" height="512">
             <span>اوام‌پی فینکس</span>
           </div>
           <div class="flex justify-between items-center w-full">
             <span>قیمت لحظه‌ای</span>
             <span dir="ltr"
-                  class="font-mono overflow-y-clip inline-block">{{ market.ompfinex.price | number: '1.2-10' }}$</span>
+                  class="font-mono overflow-y-clip inline-block">{{ market.ompfinex.price | number: '1.2-10' + '%' }}</span>
           </div>
           <div class="flex justify-between items-center w-full">
             <span>حجم بازار</span>
             <span dir="ltr"
-                  class="font-mono overflow-y-clip inline-block">{{ market.ompfinex.volume | number: '1.2-4' }} {{ market.currencyId }}</span>
+                  class="font-mono overflow-y-clip inline-block">{{ market.ompfinex.volume | number: '1.2-4' }}</span>
           </div>
         </div>
         <div>
@@ -30,24 +32,23 @@
           </div>
           <div class="flex justify-between items-center w-full">
             <span>قیمت لحظه‌ای</span>
-            <span dir="ltr" class="font-mono overflow-y-clip inline-block">{{ market.kucoin.price | number: '1.2-10' }}
-              $</span>
+            <span dir="ltr"
+                  class="font-mono overflow-y-clip inline-block">{{ market.kucoin.price | number: '1.2-10' }}</span>
           </div>
           <div class="flex justify-between items-center w-full">
             <span>حجم بازار</span>
             <span dir="ltr"
-                  class="font-mono overflow-y-clip inline-block">{{ market.kucoin.volume | number: '1.2-4' }} {{ market.currencyId }}</span>
+                  class="font-mono overflow-y-clip inline-block">{{ market.kucoin.volume | number: '1.2-4' }}</span>
           </div>
           <div class="flex justify-between items-center w-full">
             <span>تفاوت قیمت</span>
             <span dir="ltr"
-                  class="font-mono overflow-y-clip inline-block">{{ market.kucoin.diffPrice | number: '1.2-4' }}$</span>
+                  class="font-mono overflow-y-clip inline-block">{{ market.kucoin.diffPrice | number: '1.2-4' + '%' }}</span>
           </div>
           <div class="flex justify-between items-center w-full">
             <span>درصد تفاوت</span>
             <span dir="ltr"
-                  class="font-mono overflow-y-clip inline-block">{{ market.kucoin.diffPricePercent | number: '1.0-2' }}
-              %</span>
+                  class="font-mono overflow-y-clip inline-block">{{ market.kucoin.diffPricePercent | number: '1.0-2' + '%' }}</span>
           </div>
         </div>
       </div>
