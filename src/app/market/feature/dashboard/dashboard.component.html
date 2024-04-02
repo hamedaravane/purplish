@@ -16,7 +16,7 @@
           <div class="flex justify-between items-center w-full">
             <span>قیمت لحظه‌ای</span>
             <span dir="ltr"
-                  class="font-mono overflow-y-clip inline-block">{{ market.ompfinex.price | number: '1.2-10' + '%' }}</span>
+                  class="font-mono overflow-y-clip inline-block">{{ (market.ompfinex.price | number: '1.2-10') + ' ' + 'USDT' }}</span>
           </div>
           <div class="flex justify-between items-center w-full">
             <span>حجم بازار</span>
@@ -43,12 +43,12 @@
           <div class="flex justify-between items-center w-full">
             <span>تفاوت قیمت</span>
             <span dir="ltr"
-                  class="font-mono overflow-y-clip inline-block">{{ market.kucoin.diffPrice | number: '1.2-4' + '%' }}</span>
+                  class="font-mono overflow-y-clip inline-block">{{ (market.kucoin.diffPrice | number: '1.2-4') + ' ' + 'USDT' }}</span>
           </div>
           <div class="flex justify-between items-center w-full">
             <span>درصد تفاوت</span>
             <span dir="ltr"
-                  class="font-mono overflow-y-clip inline-block">{{ market.kucoin.diffPricePercent | number: '1.0-2' + '%' }}</span>
+                  class="font-mono overflow-y-clip inline-block">{{ (market.kucoin.diffPricePercent | number: '1.0-2') + '%' }}</span>
           </div>
         </div>
       </div>
